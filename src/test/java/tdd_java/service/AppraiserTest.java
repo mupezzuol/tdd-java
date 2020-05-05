@@ -1,4 +1,4 @@
-package tdd_java;
+package tdd_java.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,9 +7,8 @@ import org.junit.jupiter.api.Test;
 import tdd_java.model.Auction;
 import tdd_java.model.Lance;
 import tdd_java.model.User;
-import tdd_java.service.Appraiser;
 
-public class AppraiserMainTest {
+public class AppraiserTest {
 	
 	@Test
 	public void mustUnderstandHigherAndLowerLances() {
