@@ -13,7 +13,7 @@ Design for automated test studies.
 
 ```java
 @Test
-public void mustUnderstandHigherAndLowerLances() {
+public void mustUnderstandLancesOrderAsc() {
     // 1. Scenario
     User userMurillo = new User("Murillo");
     User userGabriella = new User("Gabriella");
