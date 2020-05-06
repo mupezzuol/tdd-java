@@ -200,11 +200,11 @@ public class AppraiserTest {
 		double thirdHighest = 550.00;
 		
 		// 4. Execution
-		assertEquals(3, auctioneer.getHighestLances(3).size(), 0.00001);
 		assertEquals(4, auctioneer.getHighestLances(4).size(), 0.00001);
 		assertEquals(5, auctioneer.getHighestLances(10).size(), 0.00001);
 		
 		List<Lance> highestLances = auctioneer.getHighestLances(3);
+		assertEquals(3, highestLances.size(), 0.00001);//Size List
 		assertEquals(firstHighest, highestLances.get(0).getValue(), 0.00001);
 		assertEquals(secondHighest, highestLances.get(1).getValue(), 0.00001);
 		assertEquals(thirdHighest, highestLances.get(2).getValue(), 0.00001);
