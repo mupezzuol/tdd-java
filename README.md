@@ -5,6 +5,7 @@ Design for automated test studies.
 ## Index :pushpin:
 
 - [Sample Codes](#code)
+- [TDD](#tdd)
 - [Dependencies Used](#maven)
 
 ## Sample Codes <a name="code"></a>:white_check_mark:
@@ -38,6 +39,11 @@ public void mustUnderstandLancesOrderAsc() {
     assertEquals(lowerExpected, auctioneer.getLowerLance(), 0.00001);
 }
 ```
+
+## TDD <a name="tdd"></a>:white_check_mark:
+
+- TDD examples with gif.
+![tdd](resources/tdd-example.gif)
 
 ## Dependencies Used <a name="maven"></a>:link:
 
