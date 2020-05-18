@@ -40,9 +40,26 @@ public void mustUnderstandLancesOrderAsc() {
 }
 ```
 
-## TDD <a name="tdd"></a>:white_check_mark:
+- AuctionTest - Method: _`mustReceiveMultipleBids`_
 
-- TDD examples with gif.
+```java
+@Test
+public void mustReceiveMultipleBids() {
+    Auction auction = new Auction("PS5");
+    assertEquals(0, auction.getLances().size());
+    
+    auction.propose(new Lance(new User("MuPezzuol"), 8040.00));
+    auction.propose(new Lance(new User("GaPezzuol"), 41.13));
+    
+    assertEquals(2, auction.getLances().size());
+    assertEquals(8040.00, auction.getLances().get(0).getValue());
+    assertEquals(41.13, auction.getLances().get(1).getValue());
+}
+```
+
+## TDD <a name="tdd"></a>:chart_with_upwards_trend:
+
+- Demonstrating the magic of TDD in a small gif of the project.
 ![tdd](resources/tdd-example.gif)
 
 ## Dependencies Used <a name="maven"></a>:link:
