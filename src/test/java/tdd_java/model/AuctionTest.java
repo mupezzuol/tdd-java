@@ -72,5 +72,30 @@ public class AuctionTest {
 		assertEquals(10, auction.getLances().size());
 		assertEquals(200.00, auction.getLances().get(auction.getLances().size()-1).getValue());
 	}
+	
+	@Test
+	public void mustFindaLastLanceByUserAndCreateLanceWithDoubleValue() {
+		Auction auction = new Auction("Macbook Pro 15");
+        
+		User steveJobs = new User("Steve Jobs");
+        User billGates = new User("Bill Gates");
+
+        auction.propose(new Lance(steveJobs, 2000));
+        auction.propose(new Lance(billGates, 3000));
+        auction.doubleLance(steveJobs);
+
+        assertEquals(4000, auction.getLances().get(2).getValue(), 0.00001);
+		assertEquals(3, auction.getLances().size());
+	}
+	
+	@Test
+    public void mustNotDoubleIfYouHaveAPreviousLance() {
+		Auction auction = new Auction("Macbook Pro 15");
+        User steveJobs = new User("Steve Jobs");
+
+        auction.doubleLance(steveJobs);
+
+        assertEquals(0, auction.getLances().size());
+    }
 
 }

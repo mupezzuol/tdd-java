@@ -32,6 +32,19 @@ public class Auction {
 		}
 		return total;
 	}
+	
+	public void doubleLance(User user) {
+		Lance lastLanceUser = lastLanceOfUser(user);
+		if (lastLanceUser != null) propose(new Lance(user, lastLanceUser.getValue()*2));
+	}
+
+	private Lance lastLanceOfUser(User user) {
+		Lance lastLanceUser = null;
+		for (Lance lance : lances) {
+			if(lance.getUser().equals(user)) lastLanceUser = lance;
+		}
+		return lastLanceUser;
+	}
 
 	private Lance getLastLance() {
 		return lances.get(lances.size() - 1);
