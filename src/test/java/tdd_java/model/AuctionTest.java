@@ -14,7 +14,6 @@ public class AuctionTest {
 	
 	@BeforeEach
 	public void mustCreateDefaultData() {
-		System.out.println("Before");
 		this.auction = new Auction("PS5");
 		this.murilloPezzuol = new User("Murillo Pezzuol");
 		this.stevenJobs = new User("Steven Jobs");
@@ -93,9 +92,7 @@ public class AuctionTest {
 	@Test
     public void mustNotDoubleIfYouHaveAPreviousLance() {
         User steveJobs = new User("Steve Jobs");
-
         auction.doubleLance(steveJobs);
-
         assertEquals(0, auction.getLances().size());
     }
 
