@@ -2,16 +2,30 @@ package tdd_java.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class AuctionTest {
 	
+	private Auction auction;
+	private User murilloPezzuol;
+	private User stevenJobs;
+	private User billGates;
+	
+	@BeforeEach
+	public void mustCreateDefaultData() {
+		System.out.println("Before");
+		this.auction = new Auction("PS5");
+		this.murilloPezzuol = new User("Murillo Pezzuol");
+		this.stevenJobs = new User("Steven Jobs");
+		this.billGates = new User("Bill Gates");
+	}
+	
 	@Test
 	public void mustReceiveALance() {
-		Auction auction = new Auction("PS5");
 		assertEquals(0, auction.getLances().size());
 		
-		auction.propose(new Lance(new User("MuPezzuol"), 8040.00));
+		auction.propose(new Lance(murilloPezzuol, 8040.00));
 		
 		assertEquals(1, auction.getLances().size());
 		assertEquals(8040.00, auction.getLances().get(0).getValue());
@@ -19,11 +33,10 @@ public class AuctionTest {
 	
 	@Test
 	public void mustReceiveMultipleBids() {
-		Auction auction = new Auction("PS5");
 		assertEquals(0, auction.getLances().size());
 		
-		auction.propose(new Lance(new User("MuPezzuol"), 8040.00));
-		auction.propose(new Lance(new User("GaPezzuol"), 41.13));
+		auction.propose(new Lance(murilloPezzuol, 8040.00));
+		auction.propose(new Lance(stevenJobs, 41.13));
 		
 		assertEquals(2, auction.getLances().size());
 		assertEquals(8040.00, auction.getLances().get(0).getValue());
@@ -32,12 +45,8 @@ public class AuctionTest {
 	
 	@Test
 	public void mustNotAccept2LancesInARowFromTheSameUser() {
-		Auction auction = new Auction("PS5");
-		
-		User userMu = new User("MuPezzuol");
-		
-		auction.propose(new Lance(userMu, 110.11));
-		auction.propose(new Lance(userMu, 300.04));
+		auction.propose(new Lance(murilloPezzuol, 110.11));
+		auction.propose(new Lance(murilloPezzuol, 300.04));
 		
 		assertEquals(1, auction.getLances().size());
 		assertEquals(110.11, auction.getLances().get(0).getValue());
@@ -45,11 +54,6 @@ public class AuctionTest {
 	
 	@Test
 	public void mustNotAcceptMoreThan5LancesFromTheSameUser() {
-		Auction auction = new Auction("PS5");
-		
-		User stevenJobs = new User("Steven Jobs");
-		User billGates = new User("Bill Gates");
-		
 		auction.propose(new Lance(stevenJobs, 100.00));
 		auction.propose(new Lance(billGates, 200.00));
 		
@@ -75,8 +79,6 @@ public class AuctionTest {
 	
 	@Test
 	public void mustFindaLastLanceByUserAndCreateLanceWithDoubleValue() {
-		Auction auction = new Auction("Macbook Pro 15");
-        
 		User steveJobs = new User("Steve Jobs");
         User billGates = new User("Bill Gates");
 
@@ -90,7 +92,6 @@ public class AuctionTest {
 	
 	@Test
     public void mustNotDoubleIfYouHaveAPreviousLance() {
-		Auction auction = new Auction("Macbook Pro 15");
         User steveJobs = new User("Steve Jobs");
 
         auction.doubleLance(steveJobs);
