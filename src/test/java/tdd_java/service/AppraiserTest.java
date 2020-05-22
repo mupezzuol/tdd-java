@@ -20,7 +20,7 @@ public class AppraiserTest {
 	private User billGates;
 	
 	@BeforeEach
-	public void mustCreateDefaultData() {
+	public void setUp() {
 		this.auctioneer = new Appraiser();
 		this.murilloPezzuol = new User("Murillo Pezzuol");
 		this.stevenJobs = new User("Steven Jobs");

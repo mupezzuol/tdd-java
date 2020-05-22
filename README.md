@@ -4,11 +4,11 @@ Design for automated test studies.
 
 ## Index :pushpin:
 
-- [Sample Codes](#code)
+- [Examples](#examples)
 - [TDD](#tdd)
 - [Dependencies Used](#maven)
 
-## Sample Codes <a name="code"></a>:white_check_mark:
+## Examples <a name="examples"></a>:white_check_mark:
 
 - First Test.
 
@@ -40,20 +40,58 @@ public void mustUnderstandLancesOrderAsc() {
 }
 ```
 
-- AuctionTest - Method: _`mustReceiveMultipleBids`_
+- First Test with refactoring.
 
 ```java
 @Test
-public void mustReceiveMultipleBids() {
-    Auction auction = new Auction("PS5");
-    assertEquals(0, auction.getLances().size());
+public void mustUnderstandLancesOrderAsc() {
+    Auction auction = new AuctionBuilder().to("Macbook Pro 5")
+            .lance(murilloPezzuol, 110.00)
+            .lance(murilloPezzuol, 431.45)
+            .lance(billGates, 550.00)
+            .build();
     
-    auction.propose(new Lance(new User("MuPezzuol"), 8040.00));
-    auction.propose(new Lance(new User("GaPezzuol"), 41.13));
+    auctioneer.evaluate(auction);
     
-    assertEquals(2, auction.getLances().size());
-    assertEquals(8040.00, auction.getLances().get(0).getValue());
-    assertEquals(41.13, auction.getLances().get(1).getValue());
+    double higherExpected = 550.00;
+    double lowerExpected = 110.00;
+    
+    assertEquals(higherExpected, auctioneer.getHighestLance(), 0.00001);
+    assertEquals(lowerExpected, auctioneer.getLowerLance(), 0.00001);
+}
+```
+
+- Using _`@Before(jUnit)`_ or _`@BeforeEach(jupiter)`_
+
+![before-junit](resources/before-junit.png)
+
+- Testing list values
+
+```java
+@Test
+public void musFindTheBiggestLances() {
+    Auction auction = new AuctionBuilder().to("PS5")
+            .lance(murilloPezzuol, 110.0)
+            .lance(stevenJobs, 3031.45)
+            .lance(billGates, 550.0)
+            .lance(murilloPezzuol, 1550.0)
+            .lance(stevenJobs, 50.0)
+            .build();
+    
+    auctioneer.evaluate(auction);
+    
+    double firstHighest = 3031.45;
+    double secondHighest = 1550.0;
+    double thirdHighest = 550.00;
+    
+    assertEquals(4, auctioneer.getHighestLances(4).size(), 0.00001);
+    assertEquals(5, auctioneer.getHighestLances(10).size(), 0.00001);
+    
+    List<Lance> highestLances = auctioneer.getHighestLances(3);
+    assertEquals(3, highestLances.size(), 0.00001);//Size List
+    assertEquals(firstHighest, highestLances.get(0).getValue(), 0.00001);
+    assertEquals(secondHighest, highestLances.get(1).getValue(), 0.00001);
+    assertEquals(thirdHighest, highestLances.get(2).getValue(), 0.00001);
 }
 ```
 
