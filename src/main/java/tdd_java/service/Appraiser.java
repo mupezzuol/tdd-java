@@ -18,6 +18,10 @@ public class Appraiser {
 	public void evaluate(Auction auction) {
 		double totalValues = 0;
 		
+		if (auction.getLances().size() == 0) {
+			throw new RuntimeException("It is not possible to evaluate an Auction without Lances!");
+		}
+		
 		for (Lance l : auction.getLances()) {
 			if (l.getValue() > this.highestValue ) this.highestValue = l.getValue(); 
 			if(l.getValue() < this.lowerValue) this.lowerValue = l.getValue();

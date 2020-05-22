@@ -95,6 +95,71 @@ public void musFindTheBiggestLances() {
 }
 ```
 
+- Handling exceptions
+
+```java
+@Test // or use Expected with jUnit
+public void shouldNotEvaluateAuctionWithoutLances() {
+    Auction auction = new AuctionBuilder().to("Macbook Pro 5").build();
+    Assertions.assertThrows(RuntimeException.class, () -> {
+            auctioneer.evaluate(auction);
+        });
+}
+```
+
+- Using Hamcrest
+
+```java
+@Test
+public void mustUnderstandLancesOrderAsc() {
+    Auction auction = new AuctionBuilder().to("Macbook Pro 5")
+            .lance(murilloPezzuol, 110.00)
+            .lance(murilloPezzuol, 431.45)
+            .lance(billGates, 550.00)
+            .build();
+    
+    auctioneer.evaluate(auction);
+    
+    double higherExpected = 550.00;
+    double lowerExpected = 110.00;
+    
+    // Using Hamcrest
+    assertThat(auctioneer.getHighestLance(), equalTo(higherExpected));
+    assertThat(auctioneer.getLowerLance(), equalTo(lowerExpected));
+}
+```
+
+- Using Hamcrest to validate lists
+
+```java
+@Test
+public void musFindTheBiggestLances() {
+    Auction auction = new AuctionBuilder().to("PS5")
+            .lance(murilloPezzuol, 110.0)
+            .lance(stevenJobs, 3031.45)
+            .lance(billGates, 550.0)
+            .lance(murilloPezzuol, 1550.0)
+            .lance(stevenJobs, 50.0)
+            .build();
+    
+    auctioneer.evaluate(auction);
+    
+    assertEquals(4, auctioneer.getHighestLances(4).size(), 0.00001);
+    assertEquals(5, auctioneer.getHighestLances(10).size(), 0.00001);
+    
+    List<Lance> highestLances = auctioneer.getHighestLances(3);
+    
+    assertEquals(3, highestLances.size(), 0.00001);//Size List
+    
+    // Using Hamcrest (hasItems use method 'hashcode' and 'equals')
+    assertThat(highestLances, hasItems(
+            new Lance(stevenJobs, 3031.45),
+            new Lance(murilloPezzuol, 1550.0),
+            new Lance(billGates, 550.0)
+            ));
+}
+```
+
 ## TDD <a name="tdd"></a>:chart_with_upwards_trend:
 
 - Demonstrating the magic of TDD in a small gif of the project.
@@ -103,3 +168,4 @@ public void musFindTheBiggestLances() {
 ## Dependencies Used <a name="maven"></a>:link:
 
 - JUnit Jupiter 5.6.2
+- Hamcrest 1.3

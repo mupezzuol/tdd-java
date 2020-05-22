@@ -1,9 +1,13 @@
 package tdd_java.service;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +31,14 @@ public class AppraiserTest {
 		this.billGates = new User("Bill Gates");
 	}
 	
+	@Test // or use Expected with jUnit
+	public void shouldNotEvaluateAuctionWithoutLances() {
+		Auction auction = new AuctionBuilder().to("Macbook Pro 5").build();
+		Assertions.assertThrows(RuntimeException.class, () -> {
+				auctioneer.evaluate(auction);
+			});
+	}
+	
 	@Test
 	public void mustUnderstandLancesOrderAsc() {
 		Auction auction = new AuctionBuilder().to("Macbook Pro 5")
@@ -40,8 +52,9 @@ public class AppraiserTest {
 		double higherExpected = 550.00;
 		double lowerExpected = 110.00;
 		
-		assertEquals(higherExpected, auctioneer.getHighestLance(), 0.00001);
-		assertEquals(lowerExpected, auctioneer.getLowerLance(), 0.00001);
+		// Using Hamcrest
+		assertThat(auctioneer.getHighestLance(), equalTo(higherExpected));
+		assertThat(auctioneer.getLowerLance(), equalTo(lowerExpected));
 	}
 	
 	@Test
@@ -136,18 +149,19 @@ public class AppraiserTest {
 		
 		auctioneer.evaluate(auction);
 		
-		double firstHighest = 3031.45;
-		double secondHighest = 1550.0;
-		double thirdHighest = 550.00;
-		
 		assertEquals(4, auctioneer.getHighestLances(4).size(), 0.00001);
 		assertEquals(5, auctioneer.getHighestLances(10).size(), 0.00001);
 		
 		List<Lance> highestLances = auctioneer.getHighestLances(3);
+		
 		assertEquals(3, highestLances.size(), 0.00001);//Size List
-		assertEquals(firstHighest, highestLances.get(0).getValue(), 0.00001);
-		assertEquals(secondHighest, highestLances.get(1).getValue(), 0.00001);
-		assertEquals(thirdHighest, highestLances.get(2).getValue(), 0.00001);
+		
+		// Using Hamcrest (hasItems use method 'hashcode' and 'equals')
+		assertThat(highestLances, hasItems(
+				new Lance(stevenJobs, 3031.45),
+				new Lance(murilloPezzuol, 1550.0),
+				new Lance(billGates, 550.0)
+				));
 	}
 
 }
