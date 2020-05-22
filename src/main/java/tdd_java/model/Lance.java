@@ -6,6 +6,7 @@ public class Lance {
 	private double value;
 	
 	public Lance(User user, double value) {
+		if (value <= 0) throw new IllegalArgumentException();
 		this.user = user;
 		this.value = value;
 	}
